@@ -33,6 +33,7 @@ variables:
       return_to
       checkout_url
       continue
+      u
       return_path
 
 payloads:
