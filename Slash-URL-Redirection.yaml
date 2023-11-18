@@ -19,6 +19,7 @@ requests:
     path:
       - '{{BaseURL}}////http://bing.com/%2F'
       - '{{BaseURL}}////https://bing.com/%2F'
+      - '{{BaseURL}}/https://bing.com/%2F'
     stop-at-first-match: true
     matchers-condition: and
     matchers:
