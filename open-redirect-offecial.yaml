@@ -87,6 +87,8 @@ http:
           - redirect_to
           - redirect_uri
           - redirect_url
+          - redirect-uri
+          - redirect-url
           - reference
           - referrer
           - req
