@@ -154,6 +154,7 @@ http:
           - target_url
           - to_url
           - validate_url
+          - state
         fuzz:
           - "https://{{redirect}}"
 
